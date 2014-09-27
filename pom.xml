@@ -6,8 +6,8 @@
 
     <groupId>com.barabashkastuff.pzks</groupId>
     <artifactId>pzks-project</artifactId>
-    <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
     <modules>
         <module>Calculator</module>
     </modules>

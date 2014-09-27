@@ -1,11 +1,14 @@
 package com.barabashkastuff.pzks.calculator.domain;
 
+import lombok.ToString;
+
 /**
  * Token Class
  *
  * @author Andrew S. Slepakurov
  * @version 27/09/2014
  */
+@ToString
 public class Token {
     private int position;
     private String value;

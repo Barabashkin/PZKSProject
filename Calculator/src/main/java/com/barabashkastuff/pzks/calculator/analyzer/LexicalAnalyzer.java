@@ -15,6 +15,10 @@ public class LexicalAnalyzer {
     private int currAbsolutePosition = 0;
     private String expression = null;
 
+    public LexicalAnalyzer(String expression) {
+        this.expression = expression;
+    }
+
     public String getExpression() {
         return expression;
     }
@@ -82,8 +86,16 @@ public class LexicalAnalyzer {
                 case ')':
                     return new Token(currLinePosition, currChar + "", TokenType.RIGHT_BRACKET);
                 default:
-
-                    continue;
+                    for (int tmpPos = currAbsolutePosition; tmpPos < getLength(); tmpPos++) {
+                        currChar = expression.charAt(tmpPos);
+                        if ((currChar >= 'a' && currChar <= 'z') ||
+                                (currChar >= 'A' && currChar <= 'Z') ||
+                                (currChar >= '0' && currChar <= '9')) {
+                                buffer.append(currChar);
+                        } else {
+                            break;
+                        }
+                    }
             }
         }
         return new Token(currLinePosition, "", TokenType.EOE);
