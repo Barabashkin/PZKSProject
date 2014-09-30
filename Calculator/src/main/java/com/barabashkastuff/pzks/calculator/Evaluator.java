@@ -7,6 +7,7 @@ import com.barabashkastuff.pzks.calculator.exception.LexicalException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * Evaluator Class
@@ -17,6 +18,8 @@ import java.util.List;
 public class Evaluator {
     private LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer("1+2");
     private SyntaxAnalyzer syntaxAnalyzer = new SyntaxAnalyzer();
+    private static final ResourceBundle MESSAGES = ResourceBundle.getBundle("com.barabashkastuff.pzks");
+
     public static void main(String[] args) throws LexicalException {
         System.out.println((new Evaluator()).evalute());
     }
@@ -29,6 +32,7 @@ public class Evaluator {
         for (Token token : tokens) {
             System.out.println(token);
         }
+        System.out.println(MESSAGES.getString("done"));
         return "";
     }
 }
