@@ -3,10 +3,15 @@ package com.barabashkastuff.pzks.calculator;
 import com.barabashkastuff.pzks.calculator.analyzer.LexicalAnalyzer;
 import com.barabashkastuff.pzks.calculator.analyzer.SyntaxAnalyzer;
 import com.barabashkastuff.pzks.calculator.domain.Token;
+import com.barabashkastuff.pzks.calculator.domain.TokenType;
 import com.barabashkastuff.pzks.calculator.exception.LexicalException;
+import com.barabashkastuff.pzks.calculator.exception.SyntaxException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * Evaluator Class
@@ -21,12 +26,9 @@ public class Evaluator {
     @Autowired
     private SyntaxAnalyzer syntaxAnalyzer;
 
-    public static void main(String[] args) throws LexicalException, SyntaxException {
-    private LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer("1+2");
-    private SyntaxAnalyzer syntaxAnalyzer = new SyntaxAnalyzer();
     private static final ResourceBundle MESSAGES = ResourceBundle.getBundle("com.barabashkastuff.pzks");
 
-    public static void main(String[] args) throws LexicalException {
+    public static void main(String[] args) throws LexicalException, SyntaxException {
         System.out.println((new Evaluator()).evalute());
     }
 
@@ -36,7 +38,7 @@ public class Evaluator {
         String code = "1+2+3+4+5+6";
         List<Token> tokens = new ArrayList<Token>();
         lexicalAnalyzer.setExpression(code);
-        for(;;) {
+        for (; ; ) {
             Token token = lexicalAnalyzer.getNextToken();
             if (token.getTokenType() == TokenType.EOE) break;
             tokens.add(token);
