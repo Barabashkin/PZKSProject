@@ -3,15 +3,7 @@ package com.barabashkastuff.pzks.calculator;
 import com.barabashkastuff.pzks.calculator.analyzer.LexicalAnalyzer;
 import com.barabashkastuff.pzks.calculator.analyzer.SyntaxAnalyzer;
 import com.barabashkastuff.pzks.calculator.domain.Token;
-import com.barabashkastuff.pzks.calculator.domain.TokenType;
 import com.barabashkastuff.pzks.calculator.exception.LexicalException;
-import com.barabashkastuff.pzks.calculator.exception.SyntaxException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +22,11 @@ public class Evaluator {
     private SyntaxAnalyzer syntaxAnalyzer;
 
     public static void main(String[] args) throws LexicalException, SyntaxException {
+    private LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer("1+2");
+    private SyntaxAnalyzer syntaxAnalyzer = new SyntaxAnalyzer();
+    private static final ResourceBundle MESSAGES = ResourceBundle.getBundle("com.barabashkastuff.pzks");
+
+    public static void main(String[] args) throws LexicalException {
         System.out.println((new Evaluator()).evalute());
     }
 
@@ -50,6 +47,7 @@ public class Evaluator {
         System.out.println();
         syntaxAnalyzer.setTokens(tokens);
         syntaxAnalyzer.parse();
+        System.out.println(MESSAGES.getString("done"));
         return "";
     }
 }
