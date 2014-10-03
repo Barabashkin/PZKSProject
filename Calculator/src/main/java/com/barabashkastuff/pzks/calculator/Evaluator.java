@@ -26,8 +26,6 @@ public class Evaluator {
     @Autowired
     private SyntaxAnalyzer syntaxAnalyzer;
 
-    private static final ResourceBundle MESSAGES = ResourceBundle.getBundle("com.barabashkastuff.pzks");
-
     public static void main(String[] args) throws LexicalException, SyntaxException {
         System.out.println((new Evaluator()).evalute());
     }
@@ -35,10 +33,10 @@ public class Evaluator {
     public String evalute() throws LexicalException, SyntaxException {
         lexicalAnalyzer = new LexicalAnalyzer();
         syntaxAnalyzer = new SyntaxAnalyzer();
-        String code = "1+2+3+4+5+6";
+        String code = "2 + 3 * 4 / 5 - (2*3 - (4 + 5) / 6)- 35 - (42* (17 /(2 + 10)) - 33.2 - 17.5) * 2.0 - 3.2 - 3 * (4 + 5) + 3 * ( 4 - (5+2))/(2+3)";
         List<Token> tokens = new ArrayList<Token>();
         lexicalAnalyzer.setExpression(code);
-        for (; ; ) {
+        for (;;) {
             Token token = lexicalAnalyzer.getNextToken();
             if (token.getTokenType() == TokenType.EOE) break;
             tokens.add(token);
@@ -49,7 +47,6 @@ public class Evaluator {
         System.out.println();
         syntaxAnalyzer.setTokens(tokens);
         syntaxAnalyzer.parse();
-        System.out.println(MESSAGES.getString("done"));
         return "";
     }
 }
