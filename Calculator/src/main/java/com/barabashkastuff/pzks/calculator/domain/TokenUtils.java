@@ -38,8 +38,8 @@ public class TokenUtils {
     }
 
     public static List<Token> convertToPostfix(List<Token> infix) {
-        Stack<Token> operatorStack = new Stack<>();
-        List<Token> postfix = new ArrayList<>();
+        Stack<Token> operatorStack = new Stack<Token>();
+        List<Token> postfix = new ArrayList<Token>();
         for (Token token : infix) {
             if ((token.getValue().length() == 1) && token.getTokenType().getSubtype().equals(TokenSubtype.OPERATOR)) {
                 while (!operatorStack.empty() &&
@@ -84,7 +84,7 @@ public class TokenUtils {
     }
 
     public static double evaluate(List<Token> tokens) {
-        Stack<Token> stack = new Stack<>();
+        Stack<Token> stack = new Stack<Token>();
         Token op1, op2, result;
         for (Token token : tokens) {
             if (token.getTokenType().getSubtype().equals(TokenSubtype.OPERATOR)) {

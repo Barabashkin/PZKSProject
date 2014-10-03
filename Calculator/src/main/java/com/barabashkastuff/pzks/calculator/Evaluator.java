@@ -19,7 +19,6 @@ import java.util.ResourceBundle;
  * @author Andrew S. Slepakurov
  * @version 27/09/2014
  */
-@Controller
 public class Evaluator {
     @Autowired
     private LexicalAnalyzer lexicalAnalyzer;
@@ -27,15 +26,15 @@ public class Evaluator {
     private SyntaxAnalyzer syntaxAnalyzer;
 
     public static void main(String[] args) throws LexicalException, SyntaxException {
-        System.out.println((new Evaluator()).evalute());
+        String failSafe = "2 + 3 * 4 / 5 - (2*3 - (4 + 5) / 6)- 35 - (42* (17 /(2 + 10)) - 33.2 - 17.5) * 2.0 - 3.2 - 3 * (4 + 5) + 3 * ( 4 - (5+2))/(2+3)";
+        System.out.println((new Evaluator()).evalute(args.length == 0 ? failSafe : args[0]));
     }
 
-    public String evalute() throws LexicalException, SyntaxException {
+    public String evalute(String expression) throws LexicalException, SyntaxException {
         lexicalAnalyzer = new LexicalAnalyzer();
         syntaxAnalyzer = new SyntaxAnalyzer();
-        String code = "2 + 3 * 4 / 5 - (2*3 - (4 + 5) / 6)- 35 - (42* (17 /(2 + 10)) - 33.2 - 17.5) * 2.0 - 3.2 - 3 * (4 + 5) + 3 * ( 4 - (5+2))/(2+3)";
         List<Token> tokens = new ArrayList<Token>();
-        lexicalAnalyzer.setExpression(code);
+        lexicalAnalyzer.setExpression(expression);
         for (;;) {
             Token token = lexicalAnalyzer.getNextToken();
             if (token.getTokenType() == TokenType.EOE) break;

@@ -18,6 +18,8 @@ import java.util.List;
 public class SyntaxAnalyzer {
     private List<Token> tokens;
 
+    private List<Token> postfix;
+
     public List<Token> getTokens() {
         return tokens;
     }
@@ -26,17 +28,26 @@ public class SyntaxAnalyzer {
         this.tokens = tokens;
     }
 
-    public void parse() throws SyntaxException {
-        check();
-//        calculate(tokens);
-        List<Token> tokenList = TokenUtils.convertToPostfix(tokens);
-        for (Token token : tokenList) {
-            System.out.println(token);
-        }
-        System.out.println();
-        System.out.println(TokenUtils.evaluate(tokenList));
+    public List<Token> getPostfix() {
+        return postfix;
     }
 
+    public void setPostfix(List<Token> postfix) {
+        this.postfix = postfix;
+    }
+
+    public double parse() throws SyntaxException {
+        check();
+//        calculate(tokens);
+        postfix = TokenUtils.convertToPostfix(tokens);
+
+//        for (Token token : tokenList) {
+//            System.out.println(token);
+//        }
+//        System.out.println();
+//        System.out.println(TokenUtils.evaluate(tokenList));
+        return TokenUtils.evaluate(postfix);
+    }
 
 
     private void check() throws SyntaxException {
