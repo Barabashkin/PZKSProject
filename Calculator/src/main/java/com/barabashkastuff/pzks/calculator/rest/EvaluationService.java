@@ -45,7 +45,7 @@ public class EvaluationService {
 
 
     @POST
-    @Path("/calcualte")
+    @Path("/calculate")
     @Produces(MediaType.APPLICATION_JSON)
     public Response calculate(String jsonRequest) {
         String jsonResponse;
@@ -80,7 +80,7 @@ public class EvaluationService {
                     "}", JsonElement.class).toString();
             return Response.ok(jsonResponse).type(MediaType.APPLICATION_JSON).build();
         } catch (Exception e) {
-            jsonResponse = (new Gson()).fromJson("{\"exception\":\"" + e.getMessage() + "\"" +
+            jsonResponse = (new Gson()).fromJson("{\"exception\":\"" + e.toString() + "\"" +
                     ", \"code\":\"" + 1 + "\"" +
                     "}", JsonElement.class).toString();
             return Response.status(500).entity(jsonResponse).type(MediaType.APPLICATION_JSON).build();
