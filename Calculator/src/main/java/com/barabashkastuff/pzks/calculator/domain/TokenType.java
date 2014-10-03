@@ -8,31 +8,36 @@ package com.barabashkastuff.pzks.calculator.domain;
  */
 public enum TokenType {
     // 42
-    INT("integer"),
+    INT("integer", TokenSubtype.OPERAND),
     // 3.14
-    FLOAT("float"),
+    FLOAT("float", TokenSubtype.OPERAND),
     // e
-    ID("variable"),
+    ID("variable", TokenSubtype.OPERAND),
     // (
-    LEFT_BRACKET("left bracket"),
+    LEFT_BRACKET("left bracket", TokenSubtype.OPERATOR),
     // )
-    RIGHT_BRACKET("right bracket"),
+    RIGHT_BRACKET("right bracket", TokenSubtype.OPERATOR),
     // /
-    DIV("division"),
+    DIV("division", TokenSubtype.OPERATOR),
     // *
-    MULT("multiply"),
+    MULT("multiply", TokenSubtype.OPERATOR),
     // +
-    ADD("addition"),
+    ADD("addition", TokenSubtype.OPERATOR),
     // -
-    SUB("submission"),
+    SUB("submission", TokenSubtype.OPERATOR),
+    // ^
+    POW("power", TokenSubtype.OPERATOR),
 
-    EOE("end of expression");
+    EOE("end of expression", TokenSubtype.OTHER);
 
-    TokenType(String name) {
+    TokenType(String name, TokenSubtype subtype) {
         this.name = name;
+        this.subtype = subtype;
     }
 
     private String name;
+
+    private TokenSubtype subtype;
 
     public String getName() {
         return name;
@@ -40,5 +45,13 @@ public enum TokenType {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public TokenSubtype getSubtype() {
+        return subtype;
+    }
+
+    public void setSubtype(TokenSubtype subtype) {
+        this.subtype = subtype;
     }
 }
