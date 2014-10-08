@@ -22,6 +22,10 @@ public class LexicalAnalyzer {
     }
 
     public void setExpression(String expression) {
+        expression = expression.replace("(-","(0-");
+        if(expression.startsWith("-")){
+            expression = "0"+expression;
+        }
         this.expression = expression;
     }
 

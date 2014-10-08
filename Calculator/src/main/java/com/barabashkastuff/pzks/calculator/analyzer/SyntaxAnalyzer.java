@@ -7,6 +7,7 @@ import com.barabashkastuff.pzks.calculator.exception.SyntaxException;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * SyntaxAnalyzer Class
@@ -18,6 +19,8 @@ import java.util.List;
 public class SyntaxAnalyzer {
     private List<Token> tokens;
 
+    private Map<String, String> variables;
+
     private List<Token> postfix;
 
     public List<Token> getTokens() {
@@ -26,6 +29,14 @@ public class SyntaxAnalyzer {
 
     public void setTokens(List<Token> tokens) {
         this.tokens = tokens;
+    }
+
+    public Map<String, String> getVariables() {
+        return variables;
+    }
+
+    public void setVariables(Map<String, String> variables) {
+        this.variables = variables;
     }
 
     public List<Token> getPostfix() {
@@ -38,17 +49,9 @@ public class SyntaxAnalyzer {
 
     public double parse() throws SyntaxException {
         check();
-//        calculate(tokens);
         postfix = TokenUtils.convertToPostfix(tokens);
-
-//        for (Token token : tokenList) {
-//            System.out.println(token);
-//        }
-//        System.out.println();
-//        System.out.println(TokenUtils.evaluate(tokenList));
         return TokenUtils.evaluate(postfix);
     }
-
 
     private void check() throws SyntaxException {
         if (tokens.get(0).getTokenType().equals(TokenType.RIGHT_BRACKET)) {

@@ -7,6 +7,7 @@ import com.barabashkastuff.pzks.calculator.domain.TokenType;
 import com.barabashkastuff.pzks.calculator.exception.LexicalException;
 import com.barabashkastuff.pzks.calculator.exception.SyntaxException;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * EvaluationService Class
@@ -32,8 +35,10 @@ import java.util.List;
 public class EvaluationService {
     @Autowired
     private LexicalAnalyzer lexicalAnalyzer;
+//    private LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer();
     @Autowired
     private SyntaxAnalyzer syntaxAnalyzer;
+//    private SyntaxAnalyzer syntaxAnalyzer = new SyntaxAnalyzer();
 
 
     @GET
@@ -58,7 +63,17 @@ public class EvaluationService {
             return Response.status(500).entity("No expression provided!").build();
         }
         String expression = json.get("expression").getAsString();
+        // TODO: separate class
+        Map<String, String> variables = new HashMap<String, String>();
+        if(json.has("variables")){
+            String variablesString = json.get("variables").getAsString();
+            for (String variablePair : variablesString.split(";")) {
+                variables.put(variablePair.split("=")[0], variablePair.split("=")[1]);
+            }
+        }
+        // /TODO: separate class
         lexicalAnalyzer.setExpression(expression);
+        syntaxAnalyzer.setVariables(variables);
         List<Token> tokens = new ArrayList<Token>();
         try {
             for (; ; ) {
@@ -72,7 +87,6 @@ public class EvaluationService {
             for (Token token : syntaxAnalyzer.getPostfix()) {
                 sb.append(token.getValue() + " ");
             }
-            ;
             jsonResponse = (new Gson()).fromJson("{\"expression\":\"" + expression + "\"" +
                     ", \"result\":\"" + result + "\"" +
                     ", \"postfix\":\"" + sb.toString() + "\"" +
@@ -86,4 +100,10 @@ public class EvaluationService {
             return Response.status(500).entity(jsonResponse).type(MediaType.APPLICATION_JSON).build();
         }
     }
+
+//    public static void main(String[] args) {
+//        EvaluationService evaluationService = new EvaluationService();
+//        Response calculate = evaluationService.calculate("{\"request\":{\"expression\":\"-(7+(-1))\",\"variables\":\"a=2;b=3\"}}");
+//        System.out.println(calculate.getEntity().toString());
+//    }
 }
