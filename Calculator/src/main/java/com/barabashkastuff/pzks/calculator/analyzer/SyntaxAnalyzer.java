@@ -49,8 +49,21 @@ public class SyntaxAnalyzer {
 
     public double parse() throws SyntaxException {
         check();
+        variablesSwap();
         postfix = TokenUtils.convertToPostfix(tokens);
         return TokenUtils.evaluate(postfix);
+    }
+
+    private void variablesSwap() throws SyntaxException {
+        for (Token token : tokens) {
+            if ((token.getTokenType() == TokenType.ID)) {
+                if (!variables.containsKey(token.getValue())) {
+                    throw new SyntaxException("Expression contains non-initialized variable at " + token.getPosition());
+                }
+                token.setTokenType(TokenType.FLOAT);
+                token.setValue(variables.get(token.getValue()));
+            }
+        }
     }
 
     private void check() throws SyntaxException {

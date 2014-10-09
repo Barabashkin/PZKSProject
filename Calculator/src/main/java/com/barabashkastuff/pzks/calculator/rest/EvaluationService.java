@@ -65,8 +65,9 @@ public class EvaluationService {
         String expression = json.get("expression").getAsString();
         // TODO: separate class
         Map<String, String> variables = new HashMap<String, String>();
-        if(json.has("variables")){
-            String variablesString = json.get("variables").getAsString();
+        String variablesString = "";
+        if(json.has("variables") && json.get("variables").getAsString()!=""){
+            variablesString = json.get("variables").getAsString();
             for (String variablePair : variablesString.split(";")) {
                 variables.put(variablePair.split("=")[0], variablePair.split("=")[1]);
             }
@@ -88,6 +89,7 @@ public class EvaluationService {
                 sb.append(token.getValue() + " ");
             }
             jsonResponse = (new Gson()).fromJson("{\"expression\":\"" + expression + "\"" +
+                    ", \"variables\":\"" + variablesString + "\"" +
                     ", \"result\":\"" + result + "\"" +
                     ", \"postfix\":\"" + sb.toString() + "\"" +
                     ", \"code\":\"" + 0 + "\"" +
@@ -103,7 +105,7 @@ public class EvaluationService {
 
 //    public static void main(String[] args) {
 //        EvaluationService evaluationService = new EvaluationService();
-//        Response calculate = evaluationService.calculate("{\"request\":{\"expression\":\"-(7+(-1))\",\"variables\":\"a=2;b=3\"}}");
+//        Response calculate = evaluationService.calculate("{\"request\":{\"expression\":\"-(7+(-1+a))\",\"variables\":\"a=1\"}}");
 //        System.out.println(calculate.getEntity().toString());
 //    }
 }
