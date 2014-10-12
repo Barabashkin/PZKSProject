@@ -100,6 +100,8 @@ public class LexicalAnalyzer {
                                 (currChar >= 'A' && currChar <= 'Z') ||
                                 (currChar >= '0' && currChar <= '9')) {
                             buffer.append(currChar);
+                        }else if("!@#$%^&,~".contains(""+currChar)){
+                            throw new LexicalException("Wrong symbol at "+currLinePosition);
                         } else {
                             break;
                         }
