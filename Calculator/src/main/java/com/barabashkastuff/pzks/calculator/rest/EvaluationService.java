@@ -4,10 +4,7 @@ import com.barabashkastuff.pzks.calculator.analyzer.LexicalAnalyzer;
 import com.barabashkastuff.pzks.calculator.analyzer.SyntaxAnalyzer;
 import com.barabashkastuff.pzks.calculator.domain.Token;
 import com.barabashkastuff.pzks.calculator.domain.TokenType;
-import com.barabashkastuff.pzks.calculator.exception.LexicalException;
-import com.barabashkastuff.pzks.calculator.exception.SyntaxException;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,11 +31,11 @@ import java.util.Map;
 @Component
 public class EvaluationService {
     @Autowired
-//    private LexicalAnalyzer lexicalAnalyzer;
-    private LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer();
+    private LexicalAnalyzer lexicalAnalyzer;
+//    private LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer();
     @Autowired
-//    private SyntaxAnalyzer syntaxAnalyzer;
-    private SyntaxAnalyzer syntaxAnalyzer = new SyntaxAnalyzer();
+    private SyntaxAnalyzer syntaxAnalyzer;
+//    private SyntaxAnalyzer syntaxAnalyzer = new SyntaxAnalyzer();
 
 
     @GET
@@ -103,11 +100,11 @@ public class EvaluationService {
         }
     }
 
-    public static void main(String[] args) {
-        EvaluationService evaluationService = new EvaluationService();
-        String expression = "{\"request\":{\"expression\":\"(-2xy4+15.34)(-a+(-3))\",\"variables\":\"a=4\"}}";
-        Response calculate = evaluationService.calculate(expression);
-        System.out.println(calculate.getEntity().toString());
-    }
+//    public static void main(String[] args) {
+//        EvaluationService evaluationService = new EvaluationService();
+//        String expression = "{\"request\":{\"expression\":\"(-2xy4+15.34)(-a+(-3))\",\"variables\":\"a=4\"}}";
+//        Response calculate = evaluationService.calculate(expression);
+//        System.out.println(calculate.getEntity().toString());
+//    }
 //    /2xy4+*1,5.5.4)(-$a+()/
 }
