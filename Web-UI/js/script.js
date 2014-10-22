@@ -19,7 +19,7 @@ $(document).ready(function () {
             $.ajax({
                 type: "POST",
 //                url: "http://vm-siuesb-d1-smx:8881/kpi/pzks/calculate",
-                url: "http://localhost:8881/kpi/pzks/calculate",
+                url: "http://barabashkastuff.com:8881/kpi/pzks/calculate",
 //                data: JSON.stringify(jsonRequest),
                 data: "{\"request\":{expression:"+expression+"}}",
                 dataType: "json",
