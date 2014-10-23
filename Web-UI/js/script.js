@@ -21,7 +21,7 @@ $(document).ready(function () {
 //                url: "http://vm-siuesb-d1-smx:8881/kpi/pzks/calculate",
                 url: "http://barabashkastuff.com:8881/kpi/pzks/calculate",
 //                data: JSON.stringify(jsonRequest),
-                data: "{\"request\":{expression:"+expression+"}}",
+                data: "{\"request\":{\"expression\":"+expression+"}}",
                 dataType: "json",
                 crossDomain: true,
                 success: function (data) {
