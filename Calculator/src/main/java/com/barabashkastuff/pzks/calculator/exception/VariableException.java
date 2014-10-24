@@ -1,13 +1,13 @@
 package com.barabashkastuff.pzks.calculator.exception;
 
 /**
- * RequestException Class
+ * VariableException Class
  *
  * @author Andrew S. Slepakurov
  * @version 13/10/2014
  */
-public class RequestException extends Exception {
-    public RequestException(String message) {
+public class VariableException extends Exception {
+    public VariableException(String message) {
         super(message);
     }
 }

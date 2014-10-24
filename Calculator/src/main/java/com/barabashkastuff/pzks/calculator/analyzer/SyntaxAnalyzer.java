@@ -4,7 +4,6 @@ import com.barabashkastuff.pzks.calculator.domain.Token;
 import com.barabashkastuff.pzks.calculator.domain.TokenType;
 import com.barabashkastuff.pzks.calculator.domain.TokenUtils;
 import com.barabashkastuff.pzks.calculator.exception.SyntaxException;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
@@ -15,13 +14,9 @@ import java.util.Map;
  * @author Andrew S. Slepakurov
  * @version 27/09/2014
  */
-@Component
 public class SyntaxAnalyzer {
     private List<Token> tokens;
-
     private Map<String, String> variables;
-
-    private List<Token> postfix;
 
     public List<Token> getTokens() {
         return tokens;
@@ -39,18 +34,10 @@ public class SyntaxAnalyzer {
         this.variables = variables;
     }
 
-    public List<Token> getPostfix() {
-        return postfix;
-    }
-
-    public void setPostfix(List<Token> postfix) {
-        this.postfix = postfix;
-    }
-
     public double parse() throws SyntaxException {
         check();
         variablesSwap();
-        postfix = TokenUtils.convertToPostfix(tokens);
+        List<Token> postfix = TokenUtils.convertToPostfix(tokens);
         return TokenUtils.evaluate(postfix);
     }
 
@@ -120,7 +107,5 @@ public class SyntaxAnalyzer {
                 }
             }
         }
-
-
     }
 }

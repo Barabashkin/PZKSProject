@@ -3,7 +3,6 @@ package com.barabashkastuff.pzks.calculator.analyzer;
 import com.barabashkastuff.pzks.calculator.domain.Token;
 import com.barabashkastuff.pzks.calculator.domain.TokenType;
 import com.barabashkastuff.pzks.calculator.exception.LexicalException;
-import org.springframework.stereotype.Component;
 
 /**
  * LexicalAnalyzer Class
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Component;
  * @author Andrew S. Slepakurov
  * @version 27/09/2014
  */
-@Component
 public class LexicalAnalyzer {
     private int currLinePosition = 1;
     private int currAbsolutePosition = 0;
@@ -109,7 +107,13 @@ public class LexicalAnalyzer {
                     return new Token(currLinePosition, buffer.toString(), TokenType.ID);
             }
         }
+        empty();
         return new Token(currLinePosition, "", TokenType.EOE);
     }
 
+    public void empty(){
+        currLinePosition = 1;
+        currAbsolutePosition = 0;
+        expression = null;
+    }
 }
