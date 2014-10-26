@@ -8,7 +8,7 @@ $(document).ready(function () {
         if (expression == "") {
             swal({
                 title: "Validation error!",
-                crossDomain:true,
+                crossDomain: true,
                 type: "error",
                 confirmButtonColor: "#DD6B55",
                 confirmButtonText: "Fix"
@@ -18,12 +18,11 @@ $(document).ready(function () {
 //            var jsonRequest = "{\"request\":{expression:"+expression+"}}";
             $.ajax({
                 type: "POST",
-//                url: "http://vm-siuesb-d1-smx:8881/kpi/pzks/calculate",
-                url: "http://barabashkastuff.com:8881/kpi/pzks/calculate",
+                url: "http://" + window.location.host + ":8881/kpi/pzks/calculate",
 //                data: JSON.stringify(jsonRequest),
-                data: "{\"request\":{\"expression\":"+expression+"}}",
+                data: "{\"request\":{\"expression\":" + expression + "}}",
                 dataType: "json",
-                crossDomain: true,
+//                crossDomain: true,
                 success: function (data) {
 //                    swal(data);
                     console.log(data);
