@@ -3,6 +3,11 @@ package com.barabashkastuff.pzks.calculator.analyzer;
 import com.barabashkastuff.pzks.calculator.domain.Token;
 import com.barabashkastuff.pzks.calculator.domain.TokenType;
 import com.barabashkastuff.pzks.calculator.exception.LexicalException;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * LexicalAnalyzer Class
@@ -10,28 +15,51 @@ import com.barabashkastuff.pzks.calculator.exception.LexicalException;
  * @author Andrew S. Slepakurov
  * @version 27/09/2014
  */
-public class LexicalAnalyzer {
+@Component
+@Scope("prototype")
+public class LexicalAnalyzer implements IProcessor {
     private int currLinePosition = 1;
     private int currAbsolutePosition = 0;
-    private String expression = null;
+//  Consume
+    private String expression;
+//  Produce
+    private List<Token> tokens = new ArrayList<Token>();
 
     public String getExpression() {
         return expression;
     }
 
     public void setExpression(String expression) {
-        expression = expression.replace("(-","(0-");
-        if(expression.startsWith("-")){
-            expression = "0"+expression;
+        expression = expression.replace("(-", "(0-");
+        if (expression.startsWith("-")) {
+            expression = "0" + expression;
         }
         this.expression = expression;
     }
 
-    public int getLength() {
+    public List<Token> getTokens() {
+        return tokens;
+    }
+
+    public void setTokens(List<Token> tokens) {
+        this.tokens = tokens;
+    }
+
+    public void process() throws LexicalException {
+        for (;;) {
+            Token token = getNextToken();
+            if (token.getTokenType() == TokenType.EOE) {
+                break;
+            }
+            tokens.add(token);
+        }
+    }
+
+    private int getLength() {
         return expression.length();
     }
 
-    public Token getNextToken() throws LexicalException {
+    private Token getNextToken() throws LexicalException {
         Token token = lexicProcessor();
         currLinePosition += token.getValue().length();
         currAbsolutePosition += token.getValue().length();
@@ -77,7 +105,7 @@ public class LexicalAnalyzer {
                             if (!isFloat) {
                                 isFloat = true;
                                 type = TokenType.FLOAT;
-                                buffer.append((buffer.length() == 0) ? '0' + currChar : currChar+"");
+                                buffer.append((buffer.length() == 0) ? '0' + currChar : currChar + "");
                             } else {
                                 throw new LexicalException("Wrong float expression at " + currLinePosition);
                             }
@@ -98,8 +126,8 @@ public class LexicalAnalyzer {
                                 (currChar >= 'A' && currChar <= 'Z') ||
                                 (currChar >= '0' && currChar <= '9')) {
                             buffer.append(currChar);
-                        }else if("!@#$%^&,~".contains(""+currChar)){
-                            throw new LexicalException("Wrong symbol at "+currLinePosition);
+                        } else if ("!@#$%^&,~".contains("" + currChar)) {
+                            throw new LexicalException("Wrong symbol at " + currLinePosition);
                         } else {
                             break;
                         }
@@ -107,13 +135,6 @@ public class LexicalAnalyzer {
                     return new Token(currLinePosition, buffer.toString(), TokenType.ID);
             }
         }
-        empty();
         return new Token(currLinePosition, "", TokenType.EOE);
-    }
-
-    public void empty(){
-        currLinePosition = 1;
-        currAbsolutePosition = 0;
-        expression = null;
     }
 }

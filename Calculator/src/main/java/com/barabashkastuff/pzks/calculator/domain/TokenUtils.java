@@ -3,7 +3,6 @@ package com.barabashkastuff.pzks.calculator.domain;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
-import java.util.StringTokenizer;
 
 /**
  * TokenUtils Class
@@ -24,10 +23,11 @@ public class TokenUtils {
 
             case MULT:
             case DIV:
-                return op2.getTokenType().equals(TokenType.POW) || op2.getTokenType().equals(TokenType.LEFT_BRACKET);
-
-            case POW:
+//                return op2.getTokenType().equals(TokenType.POW) || op2.getTokenType().equals(TokenType.LEFT_BRACKET);
                 return op2.getTokenType().equals(TokenType.LEFT_BRACKET);
+
+//            case POW:
+//                return op2.getTokenType().equals(TokenType.LEFT_BRACKET);
 
             case LEFT_BRACKET:
                 return true;
@@ -83,11 +83,13 @@ public class TokenUtils {
         return new Token(-1, result+"", TokenType.FLOAT);
     }
 
-    public static double evaluate(List<Token> tokens) {
+    public static String evaluate(List<Token> tokens) {
         Stack<Token> stack = new Stack<Token>();
-        Token op1, op2, result;
+        Token op1;
+        Token op2;
+        Token result;
         for (Token token : tokens) {
-            if (token.getTokenType().getSubtype().equals(TokenSubtype.OPERATOR)) {
+            if (token.getTokenType().hasFlag()) {
                 op2 = stack.pop();
                 op1 = stack.pop();
                 result = evalSingleOperation(token.getTokenType(), op1, op2);
@@ -95,6 +97,6 @@ public class TokenUtils {
             } else
                 stack.push(token);
         }
-        return Float.parseFloat(stack.pop().getValue());
+        return stack.pop().getValue();
     }
 }

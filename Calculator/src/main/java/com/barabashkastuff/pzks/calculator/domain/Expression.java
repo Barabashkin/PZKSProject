@@ -1,5 +1,13 @@
 package com.barabashkastuff.pzks.calculator.domain;
 
+import com.barabashkastuff.pzks.calculator.analyzer.LexicalAnalyzer;
+import com.barabashkastuff.pzks.calculator.analyzer.SyntaxAnalyzer;
+import com.barabashkastuff.pzks.calculator.analyzer.VariableAnalyzer;
+import com.barabashkastuff.pzks.calculator.exception.LexicalException;
+import com.barabashkastuff.pzks.calculator.exception.SyntaxException;
+import com.barabashkastuff.pzks.calculator.exception.VariableException;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.List;
 import java.util.Map;
 
@@ -11,11 +19,19 @@ import java.util.Map;
  */
 public class Expression {
     private String body;
+    private String varBody;
     private List<Token> tokens;
     private Map<String, String> variables;
     private List<Token> postfix;
     private String result;
     private String exception;
+
+    @Autowired
+    private VariableAnalyzer variableAnalyzer;
+    @Autowired
+    private LexicalAnalyzer lexicalAnalyzer;
+    @Autowired
+    private SyntaxAnalyzer syntaxAnalyzer;
 
     public String getBody() {
         return body;
@@ -23,6 +39,14 @@ public class Expression {
 
     public void setBody(String body) {
         this.body = body;
+    }
+
+    public String getVarBody() {
+        return varBody;
+    }
+
+    public void setVarBody(String varBody) {
+        this.varBody = varBody;
     }
 
     public List<Token> getTokens() {
@@ -65,21 +89,16 @@ public class Expression {
         this.exception = exception;
     }
 
-    public void evaluate(){
-//        lexicalAnalyzer.setExpression(expression);
-//                syntaxAnalyzer.setVariables(variables);
-//                List<Token> tokens = new ArrayList<Token>();
-//                try {
-//                    for (; ; ) {
-//                        Token token = lexicalAnalyzer.getNextToken();
-//                        if (token.getTokenType() == TokenType.EOE) break;
-//                        tokens.add(token);
-//                    }
-//                    syntaxAnalyzer.setTokens(tokens);
-//                    double result = syntaxAnalyzer.parse();
-//                    StringBuilder sb = new StringBuilder();
-//                    for (Token token : syntaxAnalyzer.getPostfix()) {
-//                        sb.append(token.getValue() + " ");
-//                    }
+    public void evaluate() throws VariableException, LexicalException, SyntaxException {
+        variableAnalyzer.setBody(getVarBody());
+        variableAnalyzer.process();
+        setVariables(variableAnalyzer.getVariables());
+        lexicalAnalyzer.setExpression(getBody());
+        lexicalAnalyzer.process();
+        setTokens(lexicalAnalyzer.getTokens());
+        syntaxAnalyzer.setVariables(variables);
+        syntaxAnalyzer.setTokens(tokens);
+        syntaxAnalyzer.process();
+        setResult(syntaxAnalyzer.getResult());
     }
 }
