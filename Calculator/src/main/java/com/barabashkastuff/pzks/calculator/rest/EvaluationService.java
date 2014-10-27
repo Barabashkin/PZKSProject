@@ -1,6 +1,7 @@
 package com.barabashkastuff.pzks.calculator.rest;
 
 import com.barabashkastuff.pzks.calculator.domain.Expression;
+import com.barabashkastuff.pzks.calculator.exception.SyntaxListException;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -44,12 +45,12 @@ public class EvaluationService {
         JsonElement jsonElement = (new Gson()).fromJson(jsonRequest, JsonElement.class).getAsJsonObject().get("request");
 
         if (jsonElement == null) {
-            return Response.status(500).header("Access-Control-Allow-Origin", "*").entity("No JSON!").build();
+            return Response.status(Response.Status.BAD_REQUEST).header("Access-Control-Allow-Origin", "*").entity("No JSON!").build();
         }
 
         JsonObject jsonBody = jsonElement.getAsJsonObject();
         if (!jsonBody.has("expression")) {
-            return Response.status(500).header("Access-Control-Allow-Origin", "*").entity("No expression provided!").build();
+            return Response.status(Response.Status.BAD_REQUEST).header("Access-Control-Allow-Origin", "*").entity("No expression provided!").build();
         }
 
         String expressionBody = jsonBody.get("expression").getAsString();
@@ -67,22 +68,20 @@ public class EvaluationService {
                     ", \"postfix\":\"" + expression.getPostfix() + "\"" +
                     ", \"code\":\"" + 0 + "\"" +
                     "}", JsonElement.class).toString();
+        } catch (SyntaxListException e) {
+            jsonResponse = (new Gson()).fromJson("{\"exception\":\"" + e.toString() + "\"" +
+                    ", \"expression\":\"" + expression.getBody() + "\"" +
+                    ", \"code\":\"" + 1 + "\"" +
+                    "}", JsonElement.class).toString();
+            return Response.status(Response.Status.BAD_REQUEST).header("Access-Control-Allow-Origin", "*").entity(jsonResponse).type(MediaType.APPLICATION_JSON).build();
         } catch (Exception e) {
             jsonResponse = (new Gson()).fromJson("{\"exception\":\"" + e.toString() + "\"" +
                     ", \"expression\":\"" + expression.getBody() + "\"" +
                     ", \"code\":\"" + 1 + "\"" +
                     "}", JsonElement.class).toString();
-            return Response.status(500).header("Access-Control-Allow-Origin", "*").entity(jsonResponse).type(MediaType.APPLICATION_JSON).build();
+            return Response.status(Response.Status.BAD_REQUEST).header("Access-Control-Allow-Origin", "*").entity(jsonResponse).type(MediaType.APPLICATION_JSON).build();
         }
         return Response.ok(jsonResponse).header("Access-Control-Allow-Origin", "*").type(MediaType.APPLICATION_JSON).build();
     }
 }
-
-//    public static void main(String[] args) {
-//        EvaluationService evaluationService = new EvaluationService();
-//        String expression = "{\"request\":{\"expression\":\"(-2xy4+15.34)(-a+(-3))\",\"variables\":\"a=4\"}}";
-//        Response calculate = evaluationService.calculate(expression);
-//        System.out.println(calculate.getEntity().toString());
-//    }
 //    /2xy4+*1,5.5.4)(-$a+()/
-//}

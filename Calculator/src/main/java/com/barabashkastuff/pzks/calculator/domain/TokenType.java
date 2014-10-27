@@ -25,8 +25,8 @@ public enum TokenType {
     ADD("addition", TokenSubtype.OPERATOR, true),
     // -
     SUB("submission", TokenSubtype.OPERATOR, true),
-    //^
-    POW("power",TokenSubtype.OPERATOR, true),
+//    ^
+//    POW("power",TokenSubtype.OPERATOR, true),
     //end
     EOE("end of expression", TokenSubtype.OTHER, false);
 

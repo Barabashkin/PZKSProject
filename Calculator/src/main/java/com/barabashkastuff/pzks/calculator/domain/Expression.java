@@ -4,7 +4,7 @@ import com.barabashkastuff.pzks.calculator.analyzer.LexicalAnalyzer;
 import com.barabashkastuff.pzks.calculator.analyzer.SyntaxAnalyzer;
 import com.barabashkastuff.pzks.calculator.analyzer.VariableAnalyzer;
 import com.barabashkastuff.pzks.calculator.exception.LexicalException;
-import com.barabashkastuff.pzks.calculator.exception.SyntaxException;
+import com.barabashkastuff.pzks.calculator.exception.SyntaxListException;
 import com.barabashkastuff.pzks.calculator.exception.VariableException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -93,7 +93,7 @@ public class Expression {
         this.exception = exception;
     }
 
-    public void evaluate() throws VariableException, LexicalException, SyntaxException {
+    public void evaluate() throws VariableException, LexicalException, SyntaxListException {
         variableAnalyzer.setBody(getVarBody());
         variableAnalyzer.process();
         setVariables(variableAnalyzer.getVariables());

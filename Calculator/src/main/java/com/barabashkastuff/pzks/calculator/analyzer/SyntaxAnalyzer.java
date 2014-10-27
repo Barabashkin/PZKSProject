@@ -1,9 +1,11 @@
 package com.barabashkastuff.pzks.calculator.analyzer;
 
 import com.barabashkastuff.pzks.calculator.domain.Token;
+import com.barabashkastuff.pzks.calculator.domain.TokenSubtype;
 import com.barabashkastuff.pzks.calculator.domain.TokenType;
 import com.barabashkastuff.pzks.calculator.domain.TokenUtils;
 import com.barabashkastuff.pzks.calculator.exception.SyntaxException;
+import com.barabashkastuff.pzks.calculator.exception.SyntaxListException;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -19,10 +21,10 @@ import java.util.Map;
 @Component
 @Scope("prototype")
 public class SyntaxAnalyzer implements IProcessor {
-//  Consume
+    //  Consume
     private List<Token> tokens;
     private Map<String, String> variables;
-//  Produce
+    //  Produce
     private String result;
 
     public List<Token> getTokens() {
@@ -49,87 +51,78 @@ public class SyntaxAnalyzer implements IProcessor {
         this.result = result;
     }
 
-    public void process() throws SyntaxException {
-        check();
-        variablesSwap();
+    public void process() throws SyntaxListException {
+        preProcessing();
+        varSwap();
         List<Token> postfix = TokenUtils.convertToPostfix(tokens);
         setResult(TokenUtils.evaluate(postfix));
     }
 
-    private void variablesSwap() throws SyntaxException {
+    private void varSwap() {
         for (Token token : tokens) {
             if ((token.getTokenType() == TokenType.ID)) {
-                if (!variables.containsKey(token.getValue())) {
-                    throw new SyntaxException("Expression contains non-initialized variable at " + token.getPosition());
-                }
                 token.setTokenType(TokenType.FLOAT);
                 token.setValue(variables.get(token.getValue()));
             }
         }
     }
 
-    private void check() throws SyntaxException {
-        if (tokens.get(0).getTokenType().equals(TokenType.RIGHT_BRACKET)) {
-            throw new SyntaxException("Expression is non-valid: cannot start with ')'!");
+    private void preProcessing() throws SyntaxListException {
+        SyntaxListException listException = new SyntaxListException();
+        if (tokens.get(0).getTokenType().equals(TokenType.RIGHT_BRACKET) || tokens.get(0).getTokenType().equals(TokenType.DIV) || tokens.get(0).getTokenType().equals(TokenType.MULT)) {
+            listException.add(new SyntaxException("Expression is non-valid: cannot start with '" + tokens.get(0).getValue() + "' !"));
         }
-        if (tokens.get(0).getTokenType().equals(TokenType.DIV) || tokens.get(0).getTokenType().equals(TokenType.MULT)) {
-            throw new SyntaxException("Expression is non-valid: cannot start with '" + tokens.get(0).getValue() + "' !");
-        }
-        if (tokens.get(tokens.size() - 1).getTokenType().equals(TokenType.DIV) || tokens.get(tokens.size() - 1).getTokenType().equals(TokenType.MULT)
-                || tokens.get(tokens.size() - 1).getTokenType().equals(TokenType.ADD) || tokens.get(tokens.size() - 1).getTokenType().equals(TokenType.SUB)) {
-            throw new SyntaxException("Expression is non-valid: cannot end with '" + tokens.get(tokens.size() - 1).getValue() + "' !");
-        }
-//        if (tokens.get(tokens.size() - 1).getTokenType().getSubtype().equals(TokenSubtype.OPERATOR)) {
-//            throw new SyntaxException("Expression is non-valid: cannot end with '" + tokens.get(tokens.size() - 1).getValue() + "'!");
-//        }
-        if (tokens.get(tokens.size() - 1).getTokenType().equals(TokenType.LEFT_BRACKET)) {
-            throw new SyntaxException("Expression is non-valid: cannot end with '('!");
+        if (tokens.get(tokens.size() - 1).getTokenType().getSubtype().equals(TokenSubtype.OPERATOR) || tokens.get(tokens.size() - 1).getTokenType().equals(TokenType.LEFT_BRACKET)) {
+            listException.add(new SyntaxException("Expression is non-valid: cannot end with '" + tokens.get(tokens.size() - 1).getValue() + "'!"));
         }
         int leftB = 0;
         int rightB = 0;
+        int bracketBalance = 0;
         for (int i = 0; i < tokens.size(); i++) {
-            Token token = tokens.get(i);
-//            if (token.getTokenType().getSubtype() == TokenSubtype.OPERATOR && tokens.get(i + 1).getTokenType().getSubtype() == TokenSubtype.OPERATOR) {
-//                throw new SyntaxException("Expression is non-valid: cannot contain two operations in a row!");
-//            }
-            if (token.getTokenType() == TokenType.LEFT_BRACKET) {
+            Token currToken = tokens.get(i);
+            Token nextToken = (i + 1 != tokens.size()) ? tokens.get(i + 1) : null;
+            if (currToken.getTokenType().getSubtype().equals(TokenSubtype.OPERAND) || currToken.getTokenType().equals(TokenType.RIGHT_BRACKET)) {
+                if (nextToken != null && (nextToken.getTokenType().getSubtype().equals(TokenSubtype.OPERAND) || nextToken.getTokenType().equals(TokenType.LEFT_BRACKET))) {
+                    listException.add(new SyntaxException("Expression is non-valid: '" + currToken.getValue() + "' cannot be followed by '" + nextToken.getValue() + "' !"));
+                }
+            }
+            if (currToken.getTokenType() == TokenType.LEFT_BRACKET) {
+                if (nextToken != null && (nextToken.getTokenType() == TokenType.RIGHT_BRACKET)) {
+                    listException.add(new SyntaxException("Empty brackets at " + currToken.getPosition()));
+                }
+            }
+            if (currToken.getTokenType() == TokenType.LEFT_BRACKET) {
+                bracketBalance++;
+            }
+            if (currToken.getTokenType() == TokenType.RIGHT_BRACKET) {
+                if (bracketBalance == 0) {
+                    listException.add(new SyntaxException("Expression is non-valid: non-mathing ')' at " + currToken.getPosition()));
+                } else {
+                    bracketBalance--;
+                }
+            }
+            if ((currToken.getTokenType() == TokenType.ID)) {
+                if (!variables.containsKey(currToken.getValue())) {
+                    listException.add(new SyntaxException("Expression contains non-initialized variable at " + currToken.getPosition()));
+                }
+            }
+            if (nextToken != null && currToken.getTokenType().getSubtype() == TokenSubtype.OPERATOR && nextToken.getTokenType().getSubtype() == TokenSubtype.OPERATOR) {
+                listException.add(new SyntaxException("Expression is non-valid: '" + currToken.getValue() + "' cannot be followed by '" + nextToken.getValue() + "' !"));
+            }
+            if (currToken.getTokenType() == TokenType.LEFT_BRACKET) {
                 leftB++;
             }
-            if (token.getTokenType() == TokenType.RIGHT_BRACKET) {
+            if (currToken.getTokenType() == TokenType.RIGHT_BRACKET) {
                 rightB++;
             }
         }
+
         if (leftB != rightB) {
-            throw new SyntaxException("Expression is non-valid: brackets number doesn't match!");
+            listException.add(new SyntaxException("Expression is non-valid: brackets number doesn't match!"));
         }
-        for (int i = 0; i < tokens.size(); i++) {
-            Token token = tokens.get(i);
-            if (token.getTokenType() == TokenType.LEFT_BRACKET) {
-                if (tokens.get(i + 1).getTokenType() == TokenType.RIGHT_BRACKET) {
-                    throw new SyntaxException("Empty brackets at " + token.getPosition());
-                }
-            }
-        }
-        int left = 0;
-        for (int i = 0; i < tokens.size(); i++) {
-            Token token = tokens.get(i);
-            if (token.getTokenType() == TokenType.LEFT_BRACKET) {
-                left++;
-            }
-            if (tokens.get(i).getTokenType() == TokenType.RIGHT_BRACKET) {
-                if (left == 0) {
-                    throw new SyntaxException("Expression is non-valid: non-mathing ')' at " + token.getPosition());
-                } else {
-                    left--;
-                }
-            }
-        }
-        for (int i = 0; i < tokens.size(); i++) {
-            if (tokens.get(i).getTokenType() == TokenType.ADD || tokens.get(i).getTokenType() == TokenType.SUB || tokens.get(i).getTokenType() == TokenType.MULT || tokens.get(i).getTokenType() == TokenType.DIV) {
-                if (tokens.get(i + 1).getTokenType() == TokenType.ADD || tokens.get(i + 1).getTokenType() == TokenType.SUB || tokens.get(i + 1).getTokenType() == TokenType.MULT || tokens.get(i + 1).getTokenType() == TokenType.DIV) {
-                    throw new SyntaxException("Expression is non-valid: '" + tokens.get(i).getValue() + "' cannot be followed by '" + tokens.get(i + 1).getValue() + "' !");
-                }
-            }
+
+        if (listException.hasException()) {
+            throw listException;
         }
     }
 }
