@@ -4,6 +4,8 @@ import com.barabashkastuff.pzks.calculator.domain.Expression;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import org.springframework.beans.factory.ObjectFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.GET;
@@ -23,6 +25,9 @@ import javax.ws.rs.core.Response;
 @Component
 public class EvaluationService {
 
+    @Autowired
+    private ObjectFactory<Expression> expressionFactory;
+
     @GET
     @Path("/status")
     public Response getServiceStatus() {
@@ -35,7 +40,7 @@ public class EvaluationService {
     @Produces(MediaType.APPLICATION_JSON)
     public Response calculate(String jsonRequest) {
         String jsonResponse;
-        Expression expression = new Expression();
+        Expression expression = expressionFactory.getObject();
         JsonElement jsonElement = (new Gson()).fromJson(jsonRequest, JsonElement.class).getAsJsonObject().get("request");
 
         if (jsonElement == null) {

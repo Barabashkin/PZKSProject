@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:osgi="http://camel.apache.org/schema/osgi"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:cxf="http://camel.apache.org/schema/cxf"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-
+   http://camel.apache.org/schema/osgi http://camel.apache.org/schema/osgi/camel-osgi.xsd
    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-   http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd">
+   http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd http://camel.apache.org/schema/cxf http://camel.apache.org/schema/cxf/camel-cxf.xsd">
 
     <context:annotation-config/>
     <context:component-scan base-package="com.barabashkastuff.pzks.calculator"/>
-
-    <bean id="expression" class="com.barabashkastuff.pzks.calculator.domain.Expression" scope="prototype"/>
 
     <jaxrs:server id="pzksREST" address="http://0.0.0.0:8881/kpi">
         <jaxrs:serviceBeans>

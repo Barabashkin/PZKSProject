@@ -7,6 +7,8 @@ import com.barabashkastuff.pzks.calculator.exception.LexicalException;
 import com.barabashkastuff.pzks.calculator.exception.SyntaxException;
 import com.barabashkastuff.pzks.calculator.exception.VariableException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
@@ -17,7 +19,8 @@ import java.util.Map;
  * @author Andrew S. Slepakurov
  * @version 27/09/2014
  */
-
+@Component
+@Scope("prototype")
 public class Expression {
     private String body;
     private String varBody;
