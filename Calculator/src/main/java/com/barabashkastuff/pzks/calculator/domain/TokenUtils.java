@@ -41,7 +41,7 @@ public class TokenUtils {
         Stack<Token> operatorStack = new Stack<Token>();
         List<Token> postfix = new ArrayList<Token>();
         for (Token token : infix) {
-            if ((token.getValue().length() == 1) && token.getTokenType().getSubtype().equals(TokenSubtype.OPERATOR)) {
+            if ((token.getValue().length() == 1) && token.getTokenType().hasFlag()) {
                 while (!operatorStack.empty() &&
                         !lowerPrecedence(operatorStack.peek(), token))
                     postfix.add(operatorStack.pop());

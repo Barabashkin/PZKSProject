@@ -14,18 +14,25 @@ $(document).ready(function () {
                 confirmButtonText: "Fix"
             });
         } else {
-//            var jsonRequest = "{\"request\":{\"expression\":"+expression+(variables=="")?"":(",\"variables\":"+variables)+"}}";
-//            var jsonRequest = "{\"request\":{expression:"+expression+"}}";
+            var jsonRequest = "{\"request\":{\"expression\":" + expression + ((variables == "") ? "" : (",\"variables\":" + variables)) + "}}";
             $.ajax({
                 type: "POST",
                 url: "http://" + window.location.host + ":8881/kpi/pzks/calculate",
-//                data: JSON.stringify(jsonRequest),
-                data: "{\"request\":{\"expression\":" + expression + "}}",
+                data: jsonRequest,
                 dataType: "json",
-//                crossDomain: true,
-                success: function (data) {
-//                    swal(data);
-                    console.log(data);
+                crossDomain: true,
+                complete: function (data) {
+                    if (data.responseJSON.code != "0") {
+                        swal({
+                            title: "Expression error!",
+                            text: data.responseJSON.exception,
+                            type: "error",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "Ok =("
+                        });
+                    } else {
+                        swal(data.responseJSON.result);
+                    }
                 }
             });
         }
