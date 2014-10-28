@@ -84,4 +84,5 @@ public class EvaluationService {
         return Response.ok(jsonResponse).header("Access-Control-Allow-Origin", "*").type(MediaType.APPLICATION_JSON).build();
     }
 }
+
 //    /2xy4+*1,5.5.4)(-$a+()/
