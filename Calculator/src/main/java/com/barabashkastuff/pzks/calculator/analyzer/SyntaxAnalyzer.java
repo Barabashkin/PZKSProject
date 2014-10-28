@@ -26,6 +26,7 @@ public class SyntaxAnalyzer implements IProcessor {
     private Map<String, String> variables;
     //  Produce
     private String result;
+    private List<Token> postfix;
 
     public List<Token> getTokens() {
         return tokens;
@@ -51,18 +52,29 @@ public class SyntaxAnalyzer implements IProcessor {
         this.result = result;
     }
 
+    public List<Token> getPostfix() {
+        return postfix;
+    }
+
+    public void setPostfix(List<Token> postfix) {
+        this.postfix = postfix;
+    }
+
     public void process() throws SyntaxListException {
         preProcessing();
         varSwap();
         List<Token> postfix = TokenUtils.convertToPostfix(tokens);
         setResult(TokenUtils.evaluate(postfix));
+        setPostfix(postfix);
     }
 
     private void varSwap() {
-        for (Token token : tokens) {
-            if ((token.getTokenType() == TokenType.ID)) {
-                token.setTokenType(TokenType.FLOAT);
-                token.setValue(variables.get(token.getValue()));
+        for (int i = 0; i < tokens.size(); i++) {
+            Token currToken = tokens.get(i);
+            if ((currToken.getTokenType() == TokenType.ID)) {
+                currToken.setTokenType(TokenType.FLOAT);
+                currToken.setValue(variables.get(currToken.getValue()));
+                tokens.set(i, currToken);
             }
         }
     }
