@@ -104,5 +104,6 @@ public class Expression {
         syntaxAnalyzer.setTokens(tokens);
         syntaxAnalyzer.process();
         setResult(syntaxAnalyzer.getResult());
+        setPostfix(syntaxAnalyzer.getPostfix());
     }
 }

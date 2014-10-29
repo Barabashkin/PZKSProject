@@ -14,7 +14,7 @@ $(document).ready(function () {
                 confirmButtonText: "Fix"
             });
         } else {
-            var jsonRequest = "{\"request\":{\"expression\":" + expression + ((variables == "") ? "" : (",\"variables\":" + variables)) + "}}";
+            var jsonRequest = "{\"request\":{\"expression\":\"" + expression + ((variables == "\"") ? "" : ("\",\"variables\":\"" + variables+"\"")) + "}}";
             $.ajax({
                 type: "POST",
                 url: "http://" + window.location.host + ":8881/kpi/pzks/calculate",
