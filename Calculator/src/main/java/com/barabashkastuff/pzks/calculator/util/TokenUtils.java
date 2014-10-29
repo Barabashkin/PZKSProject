@@ -1,4 +1,7 @@
-package com.barabashkastuff.pzks.calculator.domain;
+package com.barabashkastuff.pzks.calculator.util;
+
+import com.barabashkastuff.pzks.calculator.domain.Token;
+import com.barabashkastuff.pzks.calculator.domain.TokenType;
 
 import java.util.ArrayList;
 import java.util.List;

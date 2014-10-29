@@ -3,7 +3,7 @@ package com.barabashkastuff.pzks.calculator.analyzer;
 import com.barabashkastuff.pzks.calculator.domain.Token;
 import com.barabashkastuff.pzks.calculator.domain.TokenSubtype;
 import com.barabashkastuff.pzks.calculator.domain.TokenType;
-import com.barabashkastuff.pzks.calculator.domain.TokenUtils;
+import com.barabashkastuff.pzks.calculator.util.TokenUtils;
 import com.barabashkastuff.pzks.calculator.exception.SyntaxException;
 import com.barabashkastuff.pzks.calculator.exception.SyntaxListException;
 import org.springframework.context.annotation.Scope;
