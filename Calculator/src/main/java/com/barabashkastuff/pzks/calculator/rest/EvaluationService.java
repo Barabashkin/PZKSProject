@@ -1,7 +1,9 @@
 package com.barabashkastuff.pzks.calculator.rest;
 
 import com.barabashkastuff.pzks.calculator.domain.Expression;
+import com.barabashkastuff.pzks.calculator.exception.LexicalException;
 import com.barabashkastuff.pzks.calculator.exception.SyntaxListException;
+import com.barabashkastuff.pzks.calculator.exception.VariableException;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -68,16 +70,28 @@ public class EvaluationService {
                     ", \"postfix\":\"" + expression.getPostfix() + "\"" +
                     ", \"code\":\"" + 0 + "\"" +
                     "}", JsonElement.class).toString();
-        } catch (SyntaxListException e) {
+        } catch (LexicalException e) {
             jsonResponse = (new Gson()).fromJson("{\"exception\":\"" + e.toString() + "\"" +
                     ", \"expression\":\"" + expression.getBody() + "\"" +
                     ", \"code\":\"" + 1 + "\"" +
                     "}", JsonElement.class).toString();
             return Response.status(Response.Status.BAD_REQUEST).header("Access-Control-Allow-Origin", "*").entity(jsonResponse).type(MediaType.APPLICATION_JSON).build();
+        } catch (VariableException e) {
+            jsonResponse = (new Gson()).fromJson("{\"exception\":\"" + e.toString() + "\"" +
+                    ", \"expression\":\"" + expression.getBody() + "\"" +
+                    ", \"code\":\"" + 2 + "\"" +
+                    "}", JsonElement.class).toString();
+            return Response.status(Response.Status.BAD_REQUEST).header("Access-Control-Allow-Origin", "*").entity(jsonResponse).type(MediaType.APPLICATION_JSON).build();
+        } catch (SyntaxListException e) {
+            jsonResponse = (new Gson()).fromJson("{\"exception\":\"" + e.toString() + "\"" +
+                    ", \"expression\":\"" + expression.getBody() + "\"" +
+                    ", \"code\":\"" + 3 + "\"" +
+                    "}", JsonElement.class).toString();
+            return Response.status(Response.Status.BAD_REQUEST).header("Access-Control-Allow-Origin", "*").entity(jsonResponse).type(MediaType.APPLICATION_JSON).build();
         } catch (Exception e) {
             jsonResponse = (new Gson()).fromJson("{\"exception\":\"" + e.toString() + "\"" +
                     ", \"expression\":\"" + expression.getBody() + "\"" +
-                    ", \"code\":\"" + 1 + "\"" +
+                    ", \"code\":\"" + 4 + "\"" +
                     "}", JsonElement.class).toString();
             return Response.status(Response.Status.BAD_REQUEST).header("Access-Control-Allow-Origin", "*").entity(jsonResponse).type(MediaType.APPLICATION_JSON).build();
         }

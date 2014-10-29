@@ -39,15 +39,23 @@
 <!-- Main jumbotron for a primary marketing message or call to action -->
 <div class="jumbotron">
     <div class="container">
-        <hr/>
-        <h3>Put your expression:</h3>
-        <input id="expression" placeholder="expression" class="input-lg"/>
-        <hr/>
-        <h3>Put variables used:</h3>
-        <input id="variables" placeholder="variables" class="input-lg"/>
-        <!--<p>This is a template for a simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.</p>-->
-        <hr/>
-        <p><a id="calculate" class="btn btn-primary btn-lg" role="button">Calculate &raquo;</a></p>
+        <div class="col-md-4">
+            <hr/>
+            <h3>Put your expression:</h3>
+            <input id="expression" placeholder="expression" class="input-lg"/>
+            <hr/>
+            <h3>Put variables used:</h3>
+            <input id="variables" placeholder="variables" class="input-lg"/>
+            <!--<p>This is a template for a simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.</p>-->
+            <hr/>
+            <p><a id="calculate" class="btn btn-primary btn-lg" role="button">Calculate &raquo;</a></p>
+        </div>
+        <div class="col-md-4">
+            <hr/>
+            <h3 id="title"></h3>
+            <hr/>
+            <p id="result"></p>
+        </div>
     </div>
 </div>
 

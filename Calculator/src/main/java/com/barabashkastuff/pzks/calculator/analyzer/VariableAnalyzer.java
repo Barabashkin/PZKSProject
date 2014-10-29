@@ -17,9 +17,9 @@ import java.util.Map;
 @Component
 @Scope("prototype")
 public class VariableAnalyzer implements IProcessor {
-//  Consume
+    //  Consume
     private String body;
-//  Produce
+    //  Produce
     private Map<String, String> variables;
 
     public String getBody() {
@@ -39,18 +39,22 @@ public class VariableAnalyzer implements IProcessor {
     }
 
     public void process() throws VariableException {
-        try {
-            Map<String, String> variables = new HashMap<String, String>();
-            if (getBody().trim().replace(" ", "").equals("")) {
-                variables = Collections.emptyMap();
-            } else {
-                for (String variablePair : body.split(";")) {
-                    variables.put(variablePair.split("=")[0], variablePair.split("=")[1]);
+        Map<String, String> variables = new HashMap<String, String>();
+        if (getBody().trim().replace(" ", "").equals("")) {
+            variables = Collections.emptyMap();
+        } else {
+            for (String variablePair : body.split(";")) {
+                String varName = variablePair.split("=")[0];
+                String varValue = variablePair.split("=")[1];
+                if (!varName.matches("^[a-zA-Z][a-zA-Z0-9]+$") ) {
+                    throw new VariableException("Variable declaration error: wrong name!");
                 }
+                if (!(varValue.matches("\\d+\\.\\d+") || varValue.matches("\\d+"))) {
+                    throw new VariableException("Variable declaration error: wrong value!");
+                }
+                variables.put(varName, varValue);
             }
-            setVariables(variables);
-        }catch (Exception e){
-            throw new VariableException(e.getMessage());
         }
+        setVariables(variables);
     }
 }

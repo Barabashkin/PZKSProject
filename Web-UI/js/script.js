@@ -22,7 +22,14 @@ $(document).ready(function () {
                 dataType: "json",
                 crossDomain: true,
                 complete: function (data) {
-                    if (data.responseJSON.code != "0") {
+                    if (data.responseJSON.code == "0") {
+                        $("#title").html("Result:");
+                        $("#result").html(data.responseJSON.result);
+                    }
+                    if (data.responseJSON.code == "1") {
+                        $("#title").html("");
+                        $("#result").html("");
+//                        $("#expression").style.borderColor("red");
                         swal({
                             title: "Expression error!",
                             text: data.responseJSON.exception,
@@ -30,8 +37,26 @@ $(document).ready(function () {
                             confirmButtonColor: "#DD6B55",
                             confirmButtonText: "Ok =("
                         });
-                    } else {
-                        swal(data.responseJSON.result);
+                    }
+                    if (data.responseJSON.code == "2") {
+                        $("#title").html("");
+                        $("#result").html("");
+//                        $("#variables").style.borderColor("red");
+                        swal({
+                            title: "Varriable error!",
+                            text: data.responseJSON.exception,
+                            type: "error",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "Ok =("
+                        });
+                    }
+                    if (data.responseJSON.code == "3") {
+                        $("#title").html("Exception:");
+                        $("#result").html(data.responseJSON.exception);
+                    }
+                    if (data.responseJSON.code == "4") {
+                        $("#title").html("Exception:");
+                        $("#result").html(data.responseJSON.exception);
                     }
                 }
             });
