@@ -54,7 +54,6 @@ public class EvaluationService {
         if (!jsonBody.has("expression")) {
             return Response.status(Response.Status.BAD_REQUEST).header("Access-Control-Allow-Origin", "*").entity("No expression provided!").build();
         }
-
         String expressionBody = jsonBody.get("expression").getAsString();
         String varBody = "";
         if (jsonBody.has("variables")) {
