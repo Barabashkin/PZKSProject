@@ -20,9 +20,9 @@ import java.util.List;
 public class LexicalAnalyzer implements IProcessor {
     private int currLinePosition = 1;
     private int currAbsolutePosition = 0;
-//  Consume
+    //  Consume
     private String expression;
-//  Produce
+    //  Produce
     private List<Token> tokens = new ArrayList<Token>();
 
     public String getExpression() {
@@ -30,10 +30,6 @@ public class LexicalAnalyzer implements IProcessor {
     }
 
     public void setExpression(String expression) {
-        expression = expression.replace("(-", "(0-");
-        if (expression.startsWith("-")) {
-            expression = "0" + expression;
-        }
         this.expression = expression;
     }
 
@@ -46,7 +42,7 @@ public class LexicalAnalyzer implements IProcessor {
     }
 
     public void process() throws LexicalException {
-        for (;;) {
+        for (; ; ) {
             Token token = getNextToken();
             if (token.getTokenType() == TokenType.EOE) {
                 break;

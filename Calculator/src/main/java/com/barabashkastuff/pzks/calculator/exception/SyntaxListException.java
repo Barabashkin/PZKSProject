@@ -36,7 +36,7 @@ public class SyntaxListException extends Exception {
     public String toString() {
         StringBuffer sb = new StringBuffer();
         for (Exception exception : exceptions) {
-            sb.append(exception.getMessage()).append(";\n");
+            sb.append(exception.getMessage()).append("; ");
         }
         return sb.toString();
     }

@@ -41,13 +41,15 @@ public class TokenUtils {
     }
 
     public static List<Token> convertToPostfix(List<Token> infix) {
+        convert(infix);
         Stack<Token> operatorStack = new Stack<Token>();
         List<Token> postfix = new ArrayList<Token>();
         for (Token token : infix) {
             if ((token.getValue().length() == 1) && token.getTokenType().hasFlag()) {
                 while (!operatorStack.empty() &&
-                        !lowerPrecedence(operatorStack.peek(), token))
+                        !lowerPrecedence(operatorStack.peek(), token)) {
                     postfix.add(operatorStack.pop());
+                }
 
                 if (token.getTokenType().equals(TokenType.RIGHT_BRACKET)) {
                     Token operator = operatorStack.pop();
@@ -55,15 +57,36 @@ public class TokenUtils {
                         postfix.add(operator);
                         operator = operatorStack.pop();
                     }
-                } else
+                } else {
                     operatorStack.push(token);
+                }
             } else {
                 postfix.add(token);
             }
         }
-        while (!operatorStack.empty())
+        while (!operatorStack.empty()) {
             postfix.add(operatorStack.pop());
+        }
         return postfix;
+    }
+
+    private static void convert(List<Token> infix) {
+        if (infix.get(0).getTokenType().equals(TokenType.SUB)) {
+            infix.add(0, new Token(0, "0", TokenType.INT));
+            for (int i = 1; i < infix.size(); i++) {
+                infix.get(i).setPosition(infix.get(i).getPosition() + 1);
+            }
+        }
+        for (int i = 0; i < infix.size(); i++) {
+            if (infix.get(i).getTokenType().equals(TokenType.LEFT_BRACKET)) {
+                if (infix.get(i + 1).getTokenType().equals(TokenType.SUB)) {
+                    infix.add((i + 1), new Token(i + 2, "0", TokenType.INT));
+                    for (int j = i + 2; j < infix.size(); j++) {
+                        infix.get(j).setPosition(infix.get(j).getPosition() + 1);
+                    }
+                }
+            }
+        }
     }
 
     public static Token evalSingleOperation(TokenType operation, Token op1, Token op2) {
@@ -83,7 +106,7 @@ public class TokenUtils {
             case DIV:
                 result = opValue1 / opValue2;
         }
-        return new Token(-1, result+"", TokenType.FLOAT);
+        return new Token(-1, result + "", TokenType.FLOAT);
     }
 
     public static String evaluate(List<Token> tokens) {
@@ -97,8 +120,9 @@ public class TokenUtils {
                 op1 = stack.pop();
                 result = evalSingleOperation(token.getTokenType(), op1, op2);
                 stack.push(result);
-            } else
+            } else {
                 stack.push(token);
+            }
         }
         return stack.pop().getValue();
     }
