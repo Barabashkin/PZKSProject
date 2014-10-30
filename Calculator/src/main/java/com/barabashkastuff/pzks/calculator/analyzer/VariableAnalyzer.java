@@ -46,7 +46,7 @@ public class VariableAnalyzer implements IProcessor {
             for (String variablePair : body.split(";")) {
                 String varName = variablePair.split("=")[0];
                 String varValue = variablePair.split("=")[1];
-                if (!varName.matches("^[a-zA-Z][a-zA-Z0-9]+$") ) {
+                if (!varName.matches("^[a-zA-Z][a-zA-Z0-9]*$") ) {
                     throw new VariableException("Variable declaration error: wrong name!");
                 }
                 if (!(varValue.matches("\\d+\\.\\d+") || varValue.matches("\\d+"))) {
