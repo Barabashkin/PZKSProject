@@ -1,5 +1,6 @@
 package com.barabashkastuff.pzks.calculator.tree;
 
+import com.barabashkastuff.pzks.calculator.domain.Expression;
 import com.barabashkastuff.pzks.calculator.domain.Token;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -28,7 +29,7 @@ public class TreePrinter {
 
     private String printNodeInternal(List<BinaryNode> nodes, int level, int maxLevel) {
         StringBuffer stringBuffer = new StringBuffer();
-        if (nodes.isEmpty())
+        if (nodes.isEmpty() || isAllElementsNull(nodes))
             return "";
 
         int floor = maxLevel - level;
@@ -97,4 +98,14 @@ public class TreePrinter {
 
         return Math.max(maxLevel(node.getLeft()), maxLevel(node.getRight())) + 1;
     }
+
+    private boolean isAllElementsNull(List list) {
+        for (Object object : list) {
+            if (object != null)
+                return false;
+        }
+
+        return true;
+    }
+
 }
