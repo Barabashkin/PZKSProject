@@ -8,6 +8,7 @@ import com.barabashkastuff.pzks.calculator.exception.SyntaxListException;
 import com.barabashkastuff.pzks.calculator.exception.VariableException;
 import com.barabashkastuff.pzks.calculator.tree.ExpressionTreeBuilder;
 import com.barabashkastuff.pzks.calculator.tree.TokenNode;
+import com.barabashkastuff.pzks.calculator.tree.TreePrinter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -32,6 +33,7 @@ public class Expression {
     private String result;
     private String exception;
     private TokenNode tree;
+    private String treePic;
 
     @Autowired
     private VariableAnalyzer variableAnalyzer;
@@ -41,6 +43,8 @@ public class Expression {
     private SyntaxAnalyzer syntaxAnalyzer;
     @Autowired
     private ExpressionTreeBuilder expressionTreeBuilder;
+    @Autowired
+    private TreePrinter treePrinter;
 
     public String getBody() {
         return body;
@@ -106,6 +110,14 @@ public class Expression {
         this.tree = tree;
     }
 
+    public String getTreePic() {
+        return treePic;
+    }
+
+    public void setTreePic(String treePic) {
+        this.treePic = treePic;
+    }
+
     public void evaluate() throws VariableException, LexicalException, SyntaxListException {
         variableAnalyzer.setBody(getVarBody());
         variableAnalyzer.process();
@@ -120,5 +132,6 @@ public class Expression {
         setPostfix(syntaxAnalyzer.getPostfix());
         expressionTreeBuilder.setTokens(syntaxAnalyzer.getTokens());
         setTree(expressionTreeBuilder.build());
+        setTreePic(treePrinter.printNode(getTree()));
     }
 }
