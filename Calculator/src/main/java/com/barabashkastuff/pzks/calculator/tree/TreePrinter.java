@@ -29,7 +29,7 @@ public class TreePrinter {
 
     private String printNodeInternal(List<BinaryNode> nodes, int level, int maxLevel) {
         StringBuffer stringBuffer = new StringBuffer();
-        if (nodes.isEmpty() || isAllElementsNull(nodes))
+        if (nodes.isEmpty())
             return "";
 
         int floor = maxLevel - level;
@@ -98,14 +98,4 @@ public class TreePrinter {
 
         return Math.max(maxLevel(node.getLeft()), maxLevel(node.getRight())) + 1;
     }
-
-    private boolean isAllElementsNull(List list) {
-        for (Object object : list) {
-            if (object != null)
-                return false;
-        }
-
-        return true;
-    }
-
 }
