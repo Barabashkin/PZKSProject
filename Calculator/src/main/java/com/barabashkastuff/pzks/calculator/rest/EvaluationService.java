@@ -17,6 +17,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.Base64;
 
 /**
  * EvaluationService Class
@@ -67,7 +68,7 @@ public class EvaluationService {
                     ", \"variables\":\"" + expression.getVarBody() + "\"" +
                     ", \"result\":\"" + expression.getResult() + "\"" +
                     ", \"postfix\":\"" + expression.getPostfix() + "\"" +
-                    ", \"tree\":\"" + expression.getTreePic() + "\"" +
+                    ", \"tree\":\"" + Base64.getEncoder().encode(expression.getTreePic().getBytes()) + "\"" +
                     ", \"code\":\"" + 0 + "\"" +
                     "}", JsonElement.class).toString();
         } catch (LexicalException e) {

@@ -1,5 +1,7 @@
 package com.barabashkastuff.pzks.calculator.tree;
 
+import com.barabashkastuff.pzks.calculator.domain.Expression;
+import com.barabashkastuff.pzks.calculator.domain.Token;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -40,6 +42,7 @@ public class TreePrinter {
         List<BinaryNode> newNodes = new ArrayList<BinaryNode>();
         for (BinaryNode node : nodes) {
             if (node != null) {
+                stringBuffer.append(((Token)node.getElement()).getValue());
                 newNodes.add(node.getLeft());
                 newNodes.add(node.getRight());
             } else {
