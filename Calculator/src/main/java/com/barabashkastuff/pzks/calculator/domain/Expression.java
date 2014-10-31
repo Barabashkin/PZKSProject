@@ -133,10 +133,6 @@ public class Expression {
         setPostfix(syntaxAnalyzer.getPostfix());
         expressionTreeBuilder.setTokens(syntaxAnalyzer.getTokens());
         setTree(expressionTreeBuilder.build());
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        OutputStreamWriter osw = new OutputStreamWriter(new PrintStream(out));
-        getTree().printTree(osw);
-        setTreePic(new String(out.toByteArray()));
-        osw.close();
+        setTreePic(treePrinter.printNode(getTree()));
     }
 }
