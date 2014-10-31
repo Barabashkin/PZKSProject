@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.io.*;
 import java.util.List;
 import java.util.Map;
 
@@ -118,7 +119,7 @@ public class Expression {
         this.treePic = treePic;
     }
 
-    public void evaluate() throws VariableException, LexicalException, SyntaxListException {
+    public void evaluate() throws VariableException, LexicalException, SyntaxListException, IOException {
         variableAnalyzer.setBody(getVarBody());
         variableAnalyzer.process();
         setVariables(variableAnalyzer.getVariables());
@@ -132,6 +133,10 @@ public class Expression {
         setPostfix(syntaxAnalyzer.getPostfix());
         expressionTreeBuilder.setTokens(syntaxAnalyzer.getTokens());
         setTree(expressionTreeBuilder.build());
-        setTreePic(treePrinter.printNode(getTree()));
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        OutputStreamWriter osw = new OutputStreamWriter(new PrintStream(out));
+        getTree().printTree(osw);
+        setTreePic(new String(out.toByteArray()));
+        osw.close();
     }
 }
