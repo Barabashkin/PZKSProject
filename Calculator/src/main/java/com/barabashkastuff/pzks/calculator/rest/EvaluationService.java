@@ -68,7 +68,7 @@ public class EvaluationService {
                     ", \"variables\":\"" + expression.getVarBody() + "\"" +
                     ", \"result\":\"" + expression.getResult() + "\"" +
                     ", \"postfix\":\"" + expression.getPostfix() + "\"" +
-                    ", \"tree\":\"" + Base64.getEncoder().encode(expression.getTreePic().getBytes()) + "\"" +
+                    ", \"tree\":\"" + (new String(org.apache.commons.codec.binary.Base64.encodeBase64(expression.getTreePic().getBytes()))) + "\"" +
                     ", \"code\":\"" + 0 + "\"" +
                     "}", JsonElement.class).toString();
         } catch (LexicalException e) {
