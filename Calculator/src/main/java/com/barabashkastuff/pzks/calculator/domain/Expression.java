@@ -6,6 +6,7 @@ import com.barabashkastuff.pzks.calculator.analyzer.VariableAnalyzer;
 import com.barabashkastuff.pzks.calculator.exception.LexicalException;
 import com.barabashkastuff.pzks.calculator.exception.SyntaxListException;
 import com.barabashkastuff.pzks.calculator.exception.VariableException;
+import com.barabashkastuff.pzks.calculator.tree.BinaryNode;
 import com.barabashkastuff.pzks.calculator.tree.ExpressionTreeBuilder;
 import com.barabashkastuff.pzks.calculator.tree.TokenNode;
 import com.barabashkastuff.pzks.calculator.tree.TreePrinter;
@@ -33,7 +34,7 @@ public class Expression {
     private List<Token> postfix;
     private String result;
     private String exception;
-    private TokenNode tree;
+    private BinaryNode tree;
     private String treePic;
 
     @Autowired
@@ -103,11 +104,11 @@ public class Expression {
         this.exception = exception;
     }
 
-    public TokenNode getTree() {
+    public BinaryNode getTree() {
         return tree;
     }
 
-    public void setTree(TokenNode tree) {
+    public void setTree(BinaryNode tree) {
         this.tree = tree;
     }
 
