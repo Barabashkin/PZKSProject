@@ -8,7 +8,7 @@
     <meta name="author" content="">
     <link rel="icon" href="favicon.ico">
 
-    <title>Projects</title>
+    <title>PZKS Project</title>
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.css" rel="stylesheet">
@@ -26,7 +26,8 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Projects</a>
+            <a class="navbar-brand" href="#">PZKS</a>
+            <a class="navbar-brand" href="index.html"><-Back</a>
         </div>
         <div class="navbar-collapse collapse">
             <form class="navbar-form navbar-right" role="form">
@@ -39,12 +40,28 @@
 <!-- Main jumbotron for a primary marketing message or call to action -->
 <div class="jumbotron">
     <div class="container">
-        <hr/>
-        <hr/>
         <div class="col-md-4">
-            <a class="btn btn-large btn-success" href="pzks.html">PZKS</a>
             <hr/>
-            <a class="btn btn-large btn-success" href="pks.html">PKS</a>
+            <h3>Put your expression:</h3>
+            <input id="expression" placeholder="expression" class="input-lg"/>
+            <hr/>
+            <h3>Put variables used:</h3>
+            <input id="variables" placeholder="variables" class="input-lg"/>
+            <!--<p>This is a template for a simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.</p>-->
+            <hr/>
+            <p><a id="calculate" class="btn btn-primary btn-lg" role="button">Calculate &raquo;</a></p>
+        </div>
+        <div class="col-md-7">
+            <hr/>
+            <h3 id="title"></h3>
+            <hr/>
+            <div id="result">
+            </div>
+            <hr/>
+            <h3 id="title1"></h3>
+            <hr/>
+            <div id="result1">
+            </div>
         </div>
     </div>
 </div>
