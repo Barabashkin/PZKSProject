@@ -2,6 +2,9 @@ package com.barabashkastuff.pzks.calculator.tree;
 
 import com.barabashkastuff.pzks.calculator.domain.Token;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * Created by insane on 26.10.14.
  * https://gitlab.com/insanejdm7/pzks
@@ -48,6 +51,8 @@ public class BinaryNode {
     }
 
     public String toJson() {
-        return "{\"" + left + "\":" + ((left == null) ? "null" : left.toJson()) + ", \"" + right + "\":" + ((right == null) ? "null" : right.toJson()) + "}";
+        String json = "{" + element.getValue() + ":{\"left\":" + ((left == null) ? "null" : left.toJson()) + ", \"right\":" + ((right == null) ? "null" : right.toJson()) + "}}";
+        Logger.getAnonymousLogger().log(Level.INFO, json);
+        return json;
     }
 }

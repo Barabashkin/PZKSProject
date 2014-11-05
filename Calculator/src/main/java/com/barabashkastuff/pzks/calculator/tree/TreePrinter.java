@@ -26,9 +26,7 @@ public class TreePrinter {
 
     public String printNode(BinaryNode root) {
         int maxLevel = maxLevel(root);
-        String tree = printNodeInternal(Collections.singletonList(root), 1, maxLevel);
-        Logger.getAnonymousLogger().log(Level.INFO, tree);
-        return tree;
+        return printNodeInternal(Collections.singletonList(root), 1, maxLevel);
     }
 
     private String printNodeInternal(List<BinaryNode> nodes, int level, int maxLevel) {
