@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * TreePrinter Class
@@ -24,7 +26,9 @@ public class TreePrinter {
 
     public String printNode(BinaryNode root) {
         int maxLevel = maxLevel(root);
-        return printNodeInternal(Collections.singletonList(root), 1, maxLevel);
+        String tree = printNodeInternal(Collections.singletonList(root), 1, maxLevel);
+        Logger.getAnonymousLogger().log(Level.INFO, tree);
+        return tree;
     }
 
     private String printNodeInternal(List<BinaryNode> nodes, int level, int maxLevel) {
