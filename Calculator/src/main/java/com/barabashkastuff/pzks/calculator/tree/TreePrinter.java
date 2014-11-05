@@ -41,6 +41,7 @@ public class TreePrinter {
         int firstSpaces = (int) Math.pow(2, (floor)) - 1;
         int betweenSpaces = (int) Math.pow(2, (floor + 1)) - 1;
 
+        stringBuffer.append("\n");
         stringBuffer.append(printWhitespaces(firstSpaces));
 
         List<BinaryNode> newNodes = new ArrayList<BinaryNode>();
@@ -52,7 +53,7 @@ public class TreePrinter {
             } else {
                 newNodes.add(null);
                 newNodes.add(null);
-                stringBuffer.append(" ");
+                stringBuffer.append(".");
             }
 
             printWhitespaces(betweenSpaces);
@@ -92,7 +93,7 @@ public class TreePrinter {
     private String printWhitespaces(int count) {
         StringBuffer stringBuffer = new StringBuffer();
         for (int i = 0; i < count; i++)
-            stringBuffer.append(" ");
+            stringBuffer.append(".");
         return stringBuffer.toString();
     }
 
