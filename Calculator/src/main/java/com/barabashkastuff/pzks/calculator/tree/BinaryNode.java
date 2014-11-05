@@ -47,4 +47,7 @@ public class BinaryNode {
         this.right = right;
     }
 
+    public String toJson() {
+        return "{\"" + left + "\":" + ((left == null) ? "null" : left.toJson()) + ", \"" + right + "\":" + ((right == null) ? "null" : right.toJson()) + "}";
+    }
 }
