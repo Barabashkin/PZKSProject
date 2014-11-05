@@ -30,7 +30,7 @@ $(document).ready(function () {
                         $("#result").append("<p>" + data.responseJSON.result + "</p>");
                         $("#title1").html("Tree:");
                         $("#result1").html("");
-                        $("#result1").append("<p>" + window.atob(data.responseJSON.tree) + "</p>");
+                        $("#result1").append("<textarea>" + window.atob(data.responseJSON.tree) + "</textarea>");
 
                     }
                     if (data.responseJSON.code == "1") {
