@@ -10,6 +10,7 @@ import com.google.gson.JsonObject;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.apache.commons.codec.binary.Base64;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -68,7 +69,7 @@ public class EvaluationService {
                     ", \"result\":\"" + expression.getResult() + "\"" +
                     ", \"postfix\":\"" + expression.getPostfix() + "\"" +
 //                    ", \"tree\":\"" + (new String(org.apache.commons.codec.binary.Base64.encodeBase64(expression.getTreePic().getBytes()))) + "\"" +
-                    ", \"tree\":\"" + (new Gson()).toJson(expression.getTree()) + "\"" +
+                    ", \"tree\":\"" + Base64.encodeBase64((new Gson()).toJson(expression.getTree()).getBytes()) + "\"" +
                     ", \"code\":\"" + 0 + "\"" +
                     "}", JsonElement.class).toString();
         } catch (LexicalException e) {
