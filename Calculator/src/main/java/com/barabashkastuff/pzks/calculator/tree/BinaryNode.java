@@ -51,7 +51,7 @@ public class BinaryNode {
     }
 
     public String toJson() {
-        String json = "{" + element.getValue() + ":{\"left\":" + ((left == null) ? "null" : left.toJson()) + ", \"right\":" + ((right == null) ? "null" : right.toJson()) + "}}";
+        String json = "{\"" + element.getValue() + "\":{\"left\":" + ((left == null) ? "\"null\"" : left.toJson()) + ", \"right\":" + ((right == null) ? "\"null\"" : right.toJson()) + "}}";
         Logger.getAnonymousLogger().log(Level.INFO, json);
         return json;
     }
